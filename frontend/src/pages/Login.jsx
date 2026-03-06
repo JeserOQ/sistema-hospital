@@ -16,7 +16,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      const res = await axios.post('http://localhost:3000/api/auth/login', form)
+      const res = await axios.post('https://sistema-hospital-67yq.onrender.com/api/auth/login', form)
       login(res.data.token, res.data.personal)
       navigate('/')
     } catch (error) {
