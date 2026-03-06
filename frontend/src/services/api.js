@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: 'https://sistema-hospital-67yq.onrender.com'
+  baseURL: 'https://sistema-hospital-67yq.onrender.com/api'
 })
 
 export const pacientesService = {
