@@ -5,8 +5,13 @@ require('dotenv').config()
 const app = express()
 
 // Middlewares
-app.use(cors())
-app.use(express.json())
+app.use(cors({
+  origin: [
+    'http://localhost:5173',
+    'https://sistema-hospital-flame.vercel.app'
+  ],
+  credentials: true
+}))
 
 // Rutas
 const pacientesRoutes = require('./src/routes/pacientes')
