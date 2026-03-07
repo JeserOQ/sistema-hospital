@@ -9,16 +9,21 @@ const Login = () => {
   const { login, personal } = useAuth()
   const navigate = useNavigate()
 
-  // Si ya hay sesión iniciada, redirigir al inicio
-  useEffect(() => {
-    if (personal) {
-      navigate('/', { replace: true })
-    }
-  }, [personal, navigate])
-
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
+
+  useEffect(() => {
+    if (personal) {
+      const redirect = localStorage.getItem('redirectAfterLogin')
+      if (redirect) {
+        localStorage.removeItem('redirectAfterLogin')
+        navigate(redirect, { replace: true })
+      } else {
+        navigate('/', { replace: true })
+      }
+    }
+  }, [personal, navigate])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
