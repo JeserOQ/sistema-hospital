@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import axios from 'axios'
@@ -6,8 +6,15 @@ import axios from 'axios'
 const Login = () => {
   const [form, setForm] = useState({ email: '', password: '' })
   const [error, setError] = useState('')
-  const { login } = useAuth()
+  const { login, personal } = useAuth()
   const navigate = useNavigate()
+
+  // Si ya hay sesión iniciada, redirigir al inicio
+  useEffect(() => {
+    if (personal) {
+      navigate('/', { replace: true })
+    }
+  }, [personal, navigate])
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value })
@@ -21,9 +28,9 @@ const Login = () => {
       const redirect = localStorage.getItem('redirectAfterLogin')
       if (redirect) {
         localStorage.removeItem('redirectAfterLogin')
-        navigate(redirect)
+        navigate(redirect, { replace: true })
       } else {
-        navigate('/')
+        navigate('/', { replace: true })
       }
     } catch (error) {
       setError('Correo o contraseña incorrectos')
