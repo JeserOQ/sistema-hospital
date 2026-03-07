@@ -53,22 +53,22 @@ const registro = async (req, res) => {
 
   if (rol === 'doctor') {
     const { error } = await supabase.from('doctores').insert([{
-      personal_id: personalId, especialidad, cedula_profesional, horario, consultorio
+      id_doctor: personalId, especialidad, cedula_profesional, horario, consultorio
     }])
     tablaError = error
   } else if (rol === 'enfermera') {
     const { error } = await supabase.from('enfermeras').insert([{
-      personal_id: personalId, turno, area, cedula_profesional
+      id_enfermera: personalId, turno, area, cedula_profesional
     }])
     tablaError = error
   } else if (rol === 'laboratorio') {
     const { error } = await supabase.from('laboratorio').insert([{
-      personal_id: personalId, cedula_profesional, turno, area_laboratorio
+      id_lab: personalId, cedula_profesional, turno, area_laboratorio
     }])
     tablaError = error
   } else if (rol === 'administrativo') {
     const { error } = await supabase.from('administrativos').insert([{
-      personal_id: personalId, departamento, cargo, area
+      id_admin: personalId, departamento, cargo, area
     }])
     tablaError = error
   }
