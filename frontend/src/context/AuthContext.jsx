@@ -16,6 +16,7 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('personal')
+    localStorage.removeItem('redirectAfterLogin')
     setPersonal(null)
   }
 

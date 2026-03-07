@@ -18,7 +18,13 @@ const Login = () => {
     try {
       const res = await axios.post('https://sistema-hospital-67yq.onrender.com/api/auth/login', form)
       login(res.data.token, res.data.personal)
-      navigate('/')
+      const redirect = localStorage.getItem('redirectAfterLogin')
+      if (redirect) {
+        localStorage.removeItem('redirectAfterLogin')
+        navigate(redirect)
+      } else {
+        navigate('/')
+      }
     } catch (error) {
       setError('Correo o contraseña incorrectos')
     }
