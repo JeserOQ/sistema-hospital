@@ -5,7 +5,6 @@ const bcrypt = require('bcryptjs')
 const login = async (req, res) => {
   const { email, password } = req.body
 
-  // Buscar el personal por email
   const { data: personal, error } = await supabase
     .from('personal')
     .select('*')
@@ -16,33 +15,21 @@ const login = async (req, res) => {
     return res.status(401).json({ error: 'Correo o contraseña incorrectos' })
   }
 
-  // Verificar la contraseña
   const passwordValida = await bcrypt.compare(password, personal.password)
 
   if (!passwordValida) {
     return res.status(401).json({ error: 'Correo o contraseña incorrectos' })
   }
 
-  // Generar el token JWT
   const token = jwt.sign(
-    {
-      id: personal.id,
-      nombre: personal.nombre,
-      email: personal.email,
-      rol: personal.rol
-    },
+    { id: personal.id, nombre: personal.nombre, email: personal.email, rol: personal.rol },
     process.env.JWT_SECRET,
     { expiresIn: '8h' }
   )
 
   res.json({
     token,
-    personal: {
-      id: personal.id,
-      nombre: personal.nombre,
-      email: personal.email,
-      rol: personal.rol
-    }
+    personal: { id: personal.id, nombre: personal.nombre, email: personal.email, rol: personal.rol }
   })
 }
 
@@ -51,10 +38,8 @@ const registro = async (req, res) => {
     especialidad, cedula_profesional, horario, consultorio,
     turno, area, area_laboratorio, departamento, cargo } = req.body
 
-  // Encriptar la contraseña antes de guardarla
   const passwordEncriptada = await bcrypt.hash(password, 10)
 
-  // Insertar en tabla principal
   const { data: personalData, error: personalError } = await supabase
     .from('personal')
     .insert([{ nombre, email, rol, password: passwordEncriptada, fecha_contratacion }])
@@ -64,23 +49,34 @@ const registro = async (req, res) => {
 
   const personalId = personalData[0].id
 
-  // Insertar en tabla específica según rol
+  let tablaError = null
+
   if (rol === 'doctor') {
-    await supabase.from('doctores').insert([{
+    const { error } = await supabase.from('doctores').insert([{
       personal_id: personalId, especialidad, cedula_profesional, horario, consultorio
     }])
+    tablaError = error
   } else if (rol === 'enfermera') {
-    await supabase.from('enfermeras').insert([{
+    const { error } = await supabase.from('enfermeras').insert([{
       personal_id: personalId, turno, area, cedula_profesional
     }])
+    tablaError = error
   } else if (rol === 'laboratorio') {
-    await supabase.from('laboratorio').insert([{
+    const { error } = await supabase.from('laboratorio').insert([{
       personal_id: personalId, cedula_profesional, turno, area_laboratorio
     }])
+    tablaError = error
   } else if (rol === 'administrativo') {
-    await supabase.from('administrativos').insert([{
+    const { error } = await supabase.from('administrativos').insert([{
       personal_id: personalId, departamento, cargo, area
     }])
+    tablaError = error
+  }
+
+  if (tablaError) {
+    return res.status(500).json({ 
+      error: 'Personal creado pero error en tabla específica: ' + tablaError.message 
+    })
   }
 
   res.status(201).json(personalData[0])
