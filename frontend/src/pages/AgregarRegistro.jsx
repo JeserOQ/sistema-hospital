@@ -1,16 +1,17 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { registrosService, pacientesService } from '../services/api'
+import { AuthContext } from '../context/AuthContext'
 
 const AgregarRegistro = () => {
   const { id } = useParams()
   const navigate = useNavigate()
+  const { personal } = useContext(AuthContext)
   const [paciente, setPaciente] = useState(null)
   const [mensaje, setMensaje] = useState('')
   const [form, setForm] = useState({
     tipo: '',
-    descripcion: '',
-    personal_id: ''
+    descripcion: ''
   })
 
   useEffect(() => {
@@ -28,7 +29,7 @@ const AgregarRegistro = () => {
     try {
       await registrosService.create({
         paciente_id: id,
-        personal_id: form.personal_id,
+        personal_id: personal.id,
         tipo: form.tipo,
         descripcion: form.descripcion
       })
@@ -46,8 +47,13 @@ const AgregarRegistro = () => {
           Agregar Registro
         </h1>
         {paciente && (
-          <p className="text-gray-500 mb-6">
+          <p className="text-gray-500 mb-2">
             Paciente: <span className="font-medium text-gray-700">{paciente.nombre}</span>
+          </p>
+        )}
+        {personal && (
+          <p className="text-gray-500 mb-6">
+            Registrado por: <span className="font-medium text-gray-700">{personal.nombre} ({personal.rol})</span>
           </p>
         )}
         {mensaje && (
@@ -56,20 +62,6 @@ const AgregarRegistro = () => {
           </div>
         )}
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              ID del Personal
-            </label>
-            <input
-              type="text"
-              name="personal_id"
-              value={form.personal_id}
-              onChange={handleChange}
-              placeholder="UUID del personal que realiza el registro"
-              required
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Tipo de registro
