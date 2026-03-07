@@ -14,7 +14,7 @@ export const pacientesService = {
 export const personalService = {
   getAll: () => api.get('/personal'),
   getById: (id) => api.get(`/personal/${id}`),
-  create: (data) => api.post('/personal', data)
+  create: (data) => api.post('/auth/registro', data)
 }
 
 export const registrosService = {
