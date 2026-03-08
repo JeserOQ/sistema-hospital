@@ -1,15 +1,9 @@
 const supabase = require('../supabase')
 const bcrypt = require('bcryptjs')
-const nodemailer = require('nodemailer')
 const crypto = require('crypto')
+const { Resend } = require('resend')
 
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
-  }
-})
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 const solicitarReset = async (req, res) => {
   const { email } = req.body
@@ -25,7 +19,7 @@ const solicitarReset = async (req, res) => {
   }
 
   const token = crypto.randomBytes(32).toString('hex')
-  const expira = new Date(Date.now() + 3600000) // 1 hora
+  const expira = new Date(Date.now() + 3600000)
 
   await supabase.from('personal').update({
     reset_token: token,
@@ -34,16 +28,16 @@ const solicitarReset = async (req, res) => {
 
   const enlace = `https://sistema-hospital-flame.vercel.app/reset-password/${token}`
 
-  await transporter.sendMail({
-    from: `"Sistema Hospital QR" <${process.env.EMAIL_USER}>`,
+  await resend.emails.send({
+    from: 'onboarding@resend.dev',
     to: email,
-    subject: 'Recuperación de contraseña',
+    subject: 'Recuperación de contraseña - Sistema Hospital QR',
     html: `
       <h2>Recuperación de contraseña</h2>
       <p>Hola ${personal.nombre},</p>
       <p>Recibimos una solicitud para restablecer tu contraseña.</p>
       <p>Haz clic en el siguiente enlace para crear una nueva contraseña:</p>
-      <a href="${enlace}" style="background:#2563eb;color:white;padding:10px 20px;border-radius:5px;text-decoration:none;">
+      <a href="${enlace}" style="background:#2563eb;color:white;padding:10px 20px;border-radius:5px;text-decoration:none;display:inline-block;margin:10px 0;">
         Restablecer contraseña
       </a>
       <p>Este enlace expira en 1 hora.</p>
