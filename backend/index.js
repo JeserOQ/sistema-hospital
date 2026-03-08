@@ -20,11 +20,13 @@ const pacientesRoutes = require('./src/routes/pacientes')
 const personalRoutes = require('./src/routes/personal')
 const registrosRoutes = require('./src/routes/registros')
 const authRoutes = require('./src/routes/auth')
+const resetRoutes = require('./src/routes/reset')
 
 app.use('/api/pacientes', pacientesRoutes)
 app.use('/api/personal', personalRoutes)
 app.use('/api/registros', registrosRoutes)
 app.use('/api/auth', authRoutes)
+app.use('/api/reset', resetRoutes)
 
 // Ruta de prueba
 app.get('/', (req, res) => {

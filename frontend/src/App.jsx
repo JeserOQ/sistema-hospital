@@ -9,6 +9,8 @@ import RegistroPaciente from './pages/RegistroPaciente'
 import DetallePaciente from './pages/DetallePaciente'
 import AgregarRegistro from './pages/AgregarRegistro'
 import RegistroPersonal from './pages/RegistroPersonal'
+import OlvidePassword from './pages/OlvidePassword'
+import ResetPassword from './pages/ResetPassword'
 
 function App() {
   return (
@@ -47,6 +49,8 @@ function App() {
               <RegistroPersonal />
             </RutaProtegida>
           } />
+          <Route path="/olvide-password" element={<OlvidePassword />} />
+            <Route path="/reset-password/:token" element={<ResetPassword />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

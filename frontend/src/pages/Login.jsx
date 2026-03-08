@@ -5,6 +5,7 @@ import axios from 'axios'
 
 const Login = () => {
   const [form, setForm] = useState({ email: '', password: '' })
+  const [verPassword, setVerPassword] = useState(false)
   const [error, setError] = useState('')
   const { login, personal } = useAuth()
   const navigate = useNavigate()
@@ -56,13 +57,26 @@ const Login = () => {
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
-            <input
-              type="password" name="password" value={form.password}
+            <div className="relative">
+              <input
+              type={verPassword ? 'text' : 'password'}
+              name="password" value={form.password}
               onChange={handleChange} required
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 pr-16"
+              />
+                <button type="button" onClick={() => setVerPassword(!verPassword)}
+                  className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600 text-sm">
+                  {verPassword ? 'Ocultar' : 'Ver'}
+                </button>
+            </div>
+          </div>
+          <div className="text-right">
+            <a href="/olvide-password" className="text-sm text-blue-600 hover:underline">
+            ¿Olvidaste tu contraseña?
+            </a>
           </div>
           <button
             type="submit"
