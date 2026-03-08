@@ -28,22 +28,27 @@ const solicitarReset = async (req, res) => {
 
   const enlace = `https://sistema-hospital-flame.vercel.app/reset-password/${token}`
 
-  await resend.emails.send({
+  const { data, error: resendError } = await resend.emails.send({
     from: 'onboarding@resend.dev',
     to: email,
     subject: 'Recuperación de contraseña - Sistema Hospital QR',
     html: `
       <h2>Recuperación de contraseña</h2>
       <p>Hola ${personal.nombre},</p>
-      <p>Recibimos una solicitud para restablecer tu contraseña.</p>
       <p>Haz clic en el siguiente enlace para crear una nueva contraseña:</p>
       <a href="${enlace}" style="background:#2563eb;color:white;padding:10px 20px;border-radius:5px;text-decoration:none;display:inline-block;margin:10px 0;">
         Restablecer contraseña
       </a>
       <p>Este enlace expira en 1 hora.</p>
-      <p>Si no solicitaste este cambio, ignora este correo.</p>
     `
   })
+
+  if (resendError) {
+    console.error('Error Resend:', resendError)
+    return res.status(500).json({ error: 'Error al enviar el correo: ' + resendError.message })
+  }
+
+  res.json({ mensaje: 'Correo enviado correctamente' })
 
   res.json({ mensaje: 'Correo enviado correctamente' })
 }
