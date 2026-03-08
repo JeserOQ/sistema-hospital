@@ -3,9 +3,9 @@ const bcrypt = require('bcryptjs')
 const crypto = require('crypto')
 const { Resend } = require('resend')
 
-const resend = new Resend(process.env.RESEND_API_KEY)
 
 const solicitarReset = async (req, res) => {
+  const resend = new Resend(process.env.RESEND_API_KEY)
   const { email } = req.body
 
   const { data: personal, error } = await supabase
@@ -47,9 +47,6 @@ const solicitarReset = async (req, res) => {
     console.error('Error Resend:', resendError)
     return res.status(500).json({ error: 'Error al enviar el correo: ' + resendError.message })
   }
-
-  res.json({ mensaje: 'Correo enviado correctamente' })
-
   res.json({ mensaje: 'Correo enviado correctamente' })
 }
 
