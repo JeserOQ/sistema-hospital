@@ -1,9 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { pacientesService } from '../services/api'
+import { AuthContext } from '../context/AuthContext'
 
 const Pacientes = () => {
   const [pacientes, setPacientes] = useState([])
   const [loading, setLoading] = useState(true)
+  const { personal } = useContext(AuthContext)
+  const navigate = useNavigate()
 
   useEffect(() => {
     pacientesService.getAll()
@@ -28,9 +32,19 @@ const Pacientes = () => {
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold text-gray-800">Lista de Pacientes</h1>
-          <a href="/registro-paciente" className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
-            + Nuevo Paciente
-          </a>
+          {personal?.rol === 'administrativo' ? (
+            <button
+              onClick={() => navigate('/registro-paciente')}
+              className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+              + Nuevo Paciente
+            </button>
+          ) : (
+            <button
+              onClick={() => navigate('/')}
+              className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
+              ← Inicio
+            </button>
+          )}
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {pacientes.map(paciente => (
@@ -45,12 +59,11 @@ const Pacientes = () => {
               <p className="text-gray-600 text-sm mb-4">
                 <span className="font-medium">Diagnóstico:</span> {paciente.diagnostico}
               </p>
-              <a
-                href={`/paciente/${paciente.id}`} 
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700"
-                >
+              <button
+                onClick={() => navigate(`/paciente/${paciente.id}`)}
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700">
                 Ver detalles y QR
-              </a>
+              </button>
             </div>
           ))}
         </div>
