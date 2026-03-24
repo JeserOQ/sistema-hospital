@@ -11,6 +11,7 @@ import AgregarRegistro from './pages/AgregarRegistro'
 import RegistroPersonal from './pages/RegistroPersonal'
 import OlvidePassword from './pages/OlvidePassword'
 import ResetPassword from './pages/ResetPassword'
+import Personal from './pages/Personal'
 
 function App() {
   return (
@@ -49,8 +50,14 @@ function App() {
               <RegistroPersonal />
             </RutaProtegida>
           } />
+          <Route path="/personal" element={
+            <RutaProtegida roles={['directivo']}>
+              <Personal />
+              </RutaProtegida>
+          } />
           <Route path="/olvide-password" element={<OlvidePassword />} />
             <Route path="/reset-password/:token" element={<ResetPassword />} />
+            
         </Routes>
       </BrowserRouter>
     </AuthProvider>

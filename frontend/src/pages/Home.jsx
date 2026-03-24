@@ -44,15 +44,17 @@ const Home = () => {
         )}
 
         {/* Directivo - Ver Pacientes y Registrar Personal */}
-        {rol =='directivo' &&(
-          <div className="flex gap-4 justify-center">
-            <button
-              onClick={() => navigate ('/pacientes')}
-              className= "bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 font-medium">
+        {rol === 'directivo' && (
+          <div className="flex gap-4 justify-center flex-wrap">
+            <button onClick={() => navigate('/pacientes')}
+              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 font-medium">
               Ver Pacientes
             </button>
-            <button
-              onClick={() => navigate('/registro-personal')}
+            <button onClick={() => navigate('/personal')}
+              className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 font-medium">
+              Ver Personal
+            </button>
+            <button onClick={() => navigate('/registro-personal')}
               className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 font-medium">
               Registrar Personal
             </button>

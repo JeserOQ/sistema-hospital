@@ -4,6 +4,15 @@ const api = axios.create({
   baseURL: 'https://sistema-hospital-67yq.onrender.com/api'
 })
 
+// Agrega el token JWT en cada petición automáticamente
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token')
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
+  return config
+})
+
 export const pacientesService = {
   getAll: () => api.get('/pacientes'),
   getById: (id) => api.get(`/pacientes/${id}`),
@@ -14,7 +23,8 @@ export const pacientesService = {
 export const personalService = {
   getAll: () => api.get('/personal'),
   getById: (id) => api.get(`/personal/${id}`),
-  create: (data) => api.post('/auth/registro', data)
+  create: (data) => api.post('/auth/registro', data),
+  update: (id, data) => api.put(`/personal/${id}`, data)
 }
 
 export const registrosService = {
