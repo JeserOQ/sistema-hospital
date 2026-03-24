@@ -4,12 +4,14 @@ const {
   getPersonal,
   getPersonalById,
   createPersonal,
-  getPersonalCompleto
+  getPersonalCompleto,
+  updatePersonal
 } = require('../controllers/personalController')
 
 router.get('/', getPersonal)
 router.get('/:id', getPersonalById)
 router.get('/:id/completo', getPersonalCompleto)
 router.post('/', createPersonal)
+router.put('/:id', updatePersonal)
 
 module.exports = router

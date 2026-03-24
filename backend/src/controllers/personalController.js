@@ -138,9 +138,25 @@ const getPersonalCompleto = async (req, res) => {
   res.json({ ...personalData, ...datosEspecificos })
 }
 
+//Actualizar personal
+const updatePersonal = async (req, res) => {
+  const { id } = req.params
+  const campos = req.body
+
+  const { data, error } = await supabase
+    .from('personal')
+    .update(campos)
+    .eq('id', id)
+    .select()
+
+  if (error) return res.status(500).json({ error: error.message })
+  res.json(data[0])
+}
+
 module.exports = {
   getPersonal,
   getPersonalById,
   createPersonal,
-  getPersonalCompleto
+  getPersonalCompleto,
+  updatePersonal
 }
