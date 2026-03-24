@@ -71,6 +71,11 @@ const registro = async (req, res) => {
       id_admin: personalId, departamento, cargo, area
     }])
     tablaError = error
+  } else if (rol === 'directivo') {
+    const { error } = await supabase.from('administrativos').insert([{
+      id_admin: personalId, departamento, cargo
+    }])
+    tablaError = error
   }
 
   if (tablaError) {
