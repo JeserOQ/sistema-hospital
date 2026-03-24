@@ -1,22 +1,29 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import QRCode from 'react-qr-code'
 import { pacientesService, registrosService } from '../services/api'
+import { AuthContext } from '../context/AuthContext'
+import { useContext } from 'react'
+import Pacientes from './Pacientes'
 
 const DetallePaciente = () => {
   const { id } = useParams()
+  const navigate = useNavigate()
+  const {personal} = useContext(AuthContext)
+  const rol = personal?.rol
   const [paciente, setPaciente] = useState(null)
   const [registros, setRegistros] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    Promise.all([
-      pacientesService.getById(id),
-      registrosService.getByPaciente(id)
-    ]).then(([pacienteRes, registrosRes]) => {
+    const peticiones = [pacientesService.getById(id)]
+    if (rol !== 'administrativo'){
+      peticiones.push(registrosService.getByPaciente(id))
+    }
+    Promise.all(peticiones).then(([pacienteRes, registrosRes]) => {
       setPaciente(pacienteRes.data)
-      setRegistros(registrosRes.data)
-      setLoading(false)
+      if (registrosRes) setRegistros (registrosRes.data)
+    setLoading(false)
     }).catch(err => {
       console.error(err)
       setLoading(false)
@@ -57,7 +64,7 @@ const DetallePaciente = () => {
             </div>
           </div>
 
-          {/* Código QR */}
+          {/* Código QR - todos los roles lo ven */}
           <div className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center justify-center">
             <h2 className="text-lg font-bold text-gray-800 mb-4">Código QR de la Pulsera</h2>
             <QRCode value={`${window.location.origin}/paciente/${paciente.id}`} size={200} />
@@ -68,40 +75,43 @@ const DetallePaciente = () => {
 
         </div>
 
-        {/* Historial de registros */}
-        <div className="bg-white p-6 rounded-lg shadow-md mt-6">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold text-gray-800">Historial Clínico</h2>
-            
-            <a href={`/paciente/${paciente.id}/agregar-registro`}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700"
-            >
-            + Agregar Registro
-            </a>
+        {/* Historial clínico - solo doctor, enfermera, laboratorio y directivo */}
+        {rol !== 'administrativo' && (
+          <div className="bg-white p-6 rounded-lg shadow-md mt-6">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold text-gray-800">Historial Clínico</h2>
+              {(rol === 'doctor' || rol === 'enfermera' || rol === 'laboratorio') && (
+                <button
+                  onClick={() => navigate(`/paciente/${paciente.id}/agregar-registro`)}
+                  className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700">
+                  + Agregar Registro
+                </button>
+              )}
             </div>
-          {registros.length === 0 ? (
-            <p className="text-gray-500">No hay registros aún</p>
-          ) : (
-            <div className="space-y-3">
-              {registros.map(registro => (
-                <div key={registro.id} className="border-l-4 border-blue-500 pl-4 py-2">
-                  <div className="flex justify-between items-start">
-                    <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-sm font-medium">
-                      {registro.tipo}
-                    </span>
-                    <span className="text-gray-400 text-sm">
-                      {new Date(registro.created_at).toLocaleString()}
-                    </span>
+            {registros.length === 0 ? (
+              <p className="text-gray-500">No hay registros aún</p>
+            ) : (
+              <div className="space-y-3">
+                {registros.map(registro => (
+                  <div key={registro.id} className="border-l-4 border-blue-500 pl-4 py-2">
+                    <div className="flex justify-between items-start">
+                      <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-sm font-medium">
+                        {registro.tipo}
+                      </span>
+                      <span className="text-gray-400 text-sm">
+                        {new Date(registro.created_at).toLocaleString()}
+                      </span>
+                    </div>
+                    <p className="text-gray-700 mt-1">{registro.descripcion}</p>
+                    <p className="text-gray-500 text-sm">
+                      Por: {registro.personal?.nombre} - {registro.personal?.rol}
+                    </p>
                   </div>
-                  <p className="text-gray-700 mt-1">{registro.descripcion}</p>
-                  <p className="text-gray-500 text-sm">
-                    Por: {registro.personal?.nombre} - {registro.personal?.rol}
-                  </p>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
 
       </div>
     </div>

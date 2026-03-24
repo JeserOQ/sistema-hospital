@@ -27,7 +27,7 @@ const Home = () => {
           </button>
         )}
 
-        {/* Administrativo - 3 botones */}
+        {/* Administrativo - 2 botones:Ver Pacientes y agregar Paciente */}
         {rol === 'administrativo' && (
           <div className="flex gap-4 justify-center">
             <button
@@ -40,6 +40,17 @@ const Home = () => {
               className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 font-medium">
               Nuevo Paciente
             </button>
+          </div>
+        )}
+
+        {/* Directivo - Ver Pacientes y Registrar Personal */}
+        {rol =='directivo' &&(
+          <div className="flex gap-4 justify-center">
+            <button
+              onClick={() => navigate ('/pacientes')}
+              className= "bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 font-medium">
+              Ver Pacientes
+            </button>
             <button
               onClick={() => navigate('/registro-personal')}
               className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 font-medium">
@@ -47,6 +58,7 @@ const Home = () => {
             </button>
           </div>
         )}
+        
       </div>
     </div>
   )

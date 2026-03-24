@@ -45,7 +45,7 @@ function App() {
             </RutaProtegida>
           } />
           <Route path="/registro-personal" element={
-            <RutaProtegida roles={['administrativo']}>
+            <RutaProtegida roles={['directivo']}>
               <RegistroPersonal />
             </RutaProtegida>
           } />
