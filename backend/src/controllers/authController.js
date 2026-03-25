@@ -76,7 +76,12 @@ const registro = async (req, res) => {
       id_admin: personalId, departamento, cargo
     }])
     tablaError = error
-  }
+  } else if (rol === 'enfermero_estudiantil') {
+  const { error } = await supabase.from('enfermeros_estudiantiles').insert([{
+    id_enfermero_est: personalId, cedula_profesional, turno, area
+  }])
+  tablaError = error
+}
 
   if (tablaError) {
     return res.status(500).json({ 

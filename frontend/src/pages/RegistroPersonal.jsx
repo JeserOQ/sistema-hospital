@@ -97,8 +97,10 @@ const RegistroPersonal = () => {
               <option value="laboratorio">Laboratorio</option>
               <option value="administrativo">Administrativo</option>
               <option value="directivo">Directivo</option>
+              <option value="enfermero_estudiantil">Enfermero Estudiantil</option>
             </select>
           </div>
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
             <input
@@ -107,6 +109,7 @@ const RegistroPersonal = () => {
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Fecha de contratación</label>
             <input
@@ -244,6 +247,33 @@ const RegistroPersonal = () => {
             </>
           )}
 
+          {form.rol === 'enfermero_estudiantil' && (
+            <>
+              <h2 className="text-lg font-semibold text-gray-700 border-b pb-2">Datos del Enfermero Estudiantil</h2>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Cédula profesional</label>
+                <input type="text" name="cedula_profesional" value={form.cedula_profesional} onChange={handleChange}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Turno</label>
+                <select name="turno" value={form.turno} onChange={handleChange}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  <option value="">Seleccionar...</option>
+                  <option value="mañana">Mañana</option>
+                  <option value="tarde">Tarde</option>
+                  <option value="noche">Noche</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Área</label>
+                <input type="text" name="area" value={form.area} onChange={handleChange}
+                  placeholder="Ej: Consultorio universitario"
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              </div>
+            </>
+          )}
+          
           <button
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 font-medium mt-4">

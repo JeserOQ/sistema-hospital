@@ -32,3 +32,14 @@ export const registrosService = {
   getByTipo: (pacienteId, tipo) => api.get(`/registros/paciente/${pacienteId}/tipo/${tipo}`),
   create: (data) => api.post('/registros', data)
 }
+
+export const estudiantesService = {
+  getAll: () => api.get('/estudiantes'),
+  getById: (id) => api.get(`/estudiantes/${id}`),
+  create: (data) => api.post('/estudiantes', data)
+}
+
+export const citasService = {
+  getByEstudiante: (id) => api.get(`/citas/estudiante/${id}`),
+  create: (data) => api.post('/citas', data)
+}

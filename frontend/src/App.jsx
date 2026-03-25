@@ -12,6 +12,10 @@ import RegistroPersonal from './pages/RegistroPersonal'
 import OlvidePassword from './pages/OlvidePassword'
 import ResetPassword from './pages/ResetPassword'
 import Personal from './pages/Personal'
+import Estudiantes from './pages/Estudiantes'
+import DetalleEstudiante from './pages/DetalleEstudiante'
+import RegistroEstudiante from './pages/RegistroEstudiante'
+import AgregarCita from './pages/AgregarCita'
 
 function App() {
   return (
@@ -53,11 +57,35 @@ function App() {
           <Route path="/personal" element={
             <RutaProtegida roles={['directivo']}>
               <Personal />
-              </RutaProtegida>
+            </RutaProtegida>
           } />
           <Route path="/olvide-password" element={<OlvidePassword />} />
             <Route path="/reset-password/:token" element={<ResetPassword />} />
-            
+          
+          <Route path="/estudiantes" element={
+            <RutaProtegida roles={['enfermero_estudiantil']}>
+              <Estudiantes />
+            </RutaProtegida>
+          } />
+
+          <Route path="/estudiante/:id" element={
+            <RutaProtegida roles={['enfermero_estudiantil']}>
+              <DetalleEstudiante />
+            </RutaProtegida>
+          } />
+
+          <Route path="/registro-estudiante" element={
+            <RutaProtegida roles={['enfermero_estudiantil']}>
+              <RegistroEstudiante />
+            </RutaProtegida>
+          } />
+
+          <Route path="/estudiante/:id/agregar-cita" element={
+            <RutaProtegida roles={['enfermero_estudiantil']}>
+              <AgregarCita />
+            </RutaProtegida>
+          } />
+          
         </Routes>
       </BrowserRouter>
     </AuthProvider>
