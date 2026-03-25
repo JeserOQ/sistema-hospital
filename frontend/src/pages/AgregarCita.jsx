@@ -60,12 +60,12 @@ const AgregarCita = () => {
           <h2 className="text-lg font-semibold text-gray-700 border-b pb-2">Información de la Consulta</h2>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Motivo de consulta</label>
-            <textarea name="motivo_consulta" value={form.motivo_consulta} onChange={handleChange} rows="2"
+            <textarea name="motivo_consulta" value={form.motivo_consulta} onChange={handleChange} rows="2" required
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Diagnóstico</label>
-            <textarea name="diagnostico" value={form.diagnostico} onChange={handleChange} rows="2"
+            <textarea name="diagnostico" value={form.diagnostico} onChange={handleChange} rows="2" required
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
           </div>
           <div>
