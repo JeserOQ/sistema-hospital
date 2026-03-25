@@ -37,7 +37,7 @@ const AgregarCita = () => {
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-md">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-800">Registrar Cita Médica</h1>
+          <h1 className="text-2xl font-bold text-gray-800">Registrar Consulta Médica</h1>
           <button onClick={() => navigate(`/estudiante/${id}`)}
             className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
             ← Atrás
@@ -110,7 +110,7 @@ const AgregarCita = () => {
 
           <button type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 font-medium mt-4">
-            Registrar Cita
+            Registrar Concuslta Medica
           </button>
         </form>
       </div>
