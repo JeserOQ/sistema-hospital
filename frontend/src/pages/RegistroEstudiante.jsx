@@ -182,7 +182,7 @@ const RegistroEstudiante = () => {
               value={form.matricula}
               onChange={handleMatriculaChange}
               required
-              maxLength={tipoMatricula === 'normal' ? 8 : 20}
+              maxLength={tipoMatricula === 'normal' ? 8 : 10}
               placeholder={tipoMatricula === 'normal' ? 'Ej: 21340123' : 'Ej: ABC12345'}
               className={`${inputClass} ${errorMatricula ? 'border-red-500' : ''}`}
             />
