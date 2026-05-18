@@ -295,7 +295,7 @@ const DetalleEstudiante = () => {
                       <button
                         onClick={() => imprimirReceta(cita)}
                         className="bg-green-600 text-white px-3 py-1 rounded-lg text-xs hover:bg-green-700 flex items-center gap-1">
-                        🖨️ Imprimir receta
+                        Imprimir receta
                       </button>
                     </div>
                   </div>
